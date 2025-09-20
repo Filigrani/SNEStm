@@ -25,6 +25,7 @@ namespace SNEStm
         };
 
         public static Dictionary<SNESButton, PictureBox> s_Player1ButtonImages = new Dictionary<SNESButton, PictureBox>();
+        public static Dictionary<SNESButton, PictureBox> s_Player2ButtonImages = new Dictionary<SNESButton, PictureBox>();
 
         private static SNESButton s_ButtonToMap = SNESButton.Up;
         private static int s_PortMapTo = 1;
@@ -38,6 +39,7 @@ namespace SNEStm
 
 
         public static string s_DebugText = "test";
+        public static string s_DebugText2 = "test";
         private static int s_DebugIncrement = 0;
 
         public static void SetButtonToMap(SNESButton Button, int Port, bool EndMapingAfterOneButton = true)
@@ -110,8 +112,12 @@ namespace SNEStm
                     if(i == 0)
                     {
                         s_DebugText = Pad.GetDebugText()+ " tick " + s_DebugIncrement;
-                        UpdateVisual(Pad.m_SNESButtonsState, 0);
+                    }else if(i == 1)
+                    {
+                        s_DebugText2 = Pad.GetDebugText() + " tick " + s_DebugIncrement;
                     }
+
+                    UpdateVisual(Pad.m_SNESButtonsState, i);
                 }
             }
             s_DebugIncrement++;
@@ -133,23 +139,34 @@ namespace SNEStm
                 {
                     item.Value.Image = item.Value.ErrorImage;
                 }
+            }else if(PlayerPort == 1)
+            {
+                foreach (var item in s_Player2ButtonImages)
+                {
+                    item.Value.Image = item.Value.ErrorImage;
+                }
             }
         }
 
         public static void UpdateVisual(bool[] ButtonStates, int PlayerPort)
         {
             UnlitButtonsByForce(PlayerPort);
-            if (PlayerPort == 0)
+            for (int i = 0; i != ButtonStates.Length; i++)
             {
-                for (int i = 0; i != ButtonStates.Length; i++)
+                PictureBox img = null;
+
+                if (PlayerPort == 0)
                 {
-                    PictureBox img;
-                    if (s_Player1ButtonImages.TryGetValue((SNESButton)i, out img))
+                    s_Player1ButtonImages.TryGetValue((SNESButton)i, out img);
+                }else if(PlayerPort == 1)
+                {
+                    s_Player2ButtonImages.TryGetValue((SNESButton)i, out img);
+                }
+                if (img != null)
+                {
+                    if (ButtonStates[i] || (s_MappingActive && s_ButtonToMap == (SNESButton)i && s_PortMapTo == PlayerPort && s_MapingBlinkFrame > c_BlinkFrameWindow))
                     {
-                        if (ButtonStates[i] || (s_MappingActive && s_ButtonToMap == (SNESButton)i && s_MapingBlinkFrame > c_BlinkFrameWindow))
-                        {
-                            img.Image = img.InitialImage;
-                        }
+                        img.Image = img.InitialImage;
                     }
                 }
             }

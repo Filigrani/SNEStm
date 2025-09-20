@@ -2,9 +2,9 @@ using static SNEStm.GamePadsManager;
 
 namespace SNEStm
 {
-    public partial class Form1 : Form
+    public partial class SNEStm : Form
     {
-        public Form1()
+        public SNEStm()
         {
             InitializeComponent();
 
@@ -15,6 +15,7 @@ namespace SNEStm
         {
             GamePadsManager.Update();
             DebugText.Text = s_DebugText;
+            DebugText2.Text = s_DebugText2;
         }
 
         private void pictureBox1_Click(object sender, EventArgs e)
@@ -92,6 +93,15 @@ namespace SNEStm
             }
             GamePadSelect1.SelectedItem = GamePadSelect1.Items[0];
             GamePadSelect1.SelectedIndex = 0;
+
+            GamePadSelect2.Items.Clear();
+            GamePadSelect2.Items.Add("None");
+            foreach (string padName in GetAllPads())
+            {
+                GamePadSelect2.Items.Add(padName);
+            }
+            GamePadSelect2.SelectedItem = GamePadSelect2.Items[0];
+            GamePadSelect2.SelectedIndex = 0;
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -114,6 +124,23 @@ namespace SNEStm
             s_Player1ButtonImages.Add(SNESButton.Start, StartButtonP1);
             s_Player1ButtonImages.Add(SNESButton.Select, SelectButtonP1);
             UnlitButtonsByForce(0);
+
+            s_Player2ButtonImages.Add(SNESButton.A, AButtonP2);
+            s_Player2ButtonImages.Add(SNESButton.B, BButtonP2);
+            s_Player2ButtonImages.Add(SNESButton.X, XButtonP2);
+            s_Player2ButtonImages.Add(SNESButton.Y, YButtonP2);
+
+            s_Player2ButtonImages.Add(SNESButton.Up, UpButtonP2);
+            s_Player2ButtonImages.Add(SNESButton.Left, LeftButtonP2);
+            s_Player2ButtonImages.Add(SNESButton.Right, RightButtonP2);
+            s_Player2ButtonImages.Add(SNESButton.Down, DownButtonP2);
+
+            s_Player2ButtonImages.Add(SNESButton.L, LButtonP2);
+            s_Player2ButtonImages.Add(SNESButton.R, RButtonP2);
+
+            s_Player2ButtonImages.Add(SNESButton.Start, StartButtonP2);
+            s_Player2ButtonImages.Add(SNESButton.Select, SelectButtonP2);
+            UnlitButtonsByForce(1);
         }
 
         private void GamePadSelect1_SelectedIndexChanged(object sender, EventArgs e)
@@ -121,9 +148,85 @@ namespace SNEStm
             SetPadForPort(GamePadSelect1.SelectedIndex, 0);
         }
 
+
+        private void GamePadSelect2_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            SetPadForPort(GamePadSelect2.SelectedIndex, 1);
+        }
+
         private void AutoAssign_Click(object sender, EventArgs e)
         {
             SetButtonToMap(SNESButton.Up, 0, false);
+        }
+
+        private void AutoAssign2_Click(object sender, EventArgs e)
+        {
+            SetButtonToMap(SNESButton.Up, 1, false);
+        }
+
+        private void UpButtonP2_Click(object sender, EventArgs e)
+        {
+            SetButtonToMap(SNESButton.Up, 1);
+        }
+
+        private void RightButtonP2_Click(object sender, EventArgs e)
+        {
+            SetButtonToMap(SNESButton.Right, 1);
+        }
+
+        private void DownButtonP2_Click(object sender, EventArgs e)
+        {
+            SetButtonToMap(SNESButton.Down, 1);
+        }
+
+        private void LeftButtonP2_Click(object sender, EventArgs e)
+        {
+            SetButtonToMap(SNESButton.Left, 1);
+        }
+
+        private void AButtonP2_Click(object sender, EventArgs e)
+        {
+            SetButtonToMap(SNESButton.A, 1);
+        }
+
+        private void BButtonP2_Click(object sender, EventArgs e)
+        {
+            SetButtonToMap(SNESButton.B, 1);
+        }
+
+        private void XButtonP2_Click(object sender, EventArgs e)
+        {
+            SetButtonToMap(SNESButton.X, 1);
+        }
+
+        private void YButtonP2_Click(object sender, EventArgs e)
+        {
+            SetButtonToMap(SNESButton.Y, 1);
+        }
+
+        private void LButtonP2_Click(object sender, EventArgs e)
+        {
+            SetButtonToMap(SNESButton.L, 1);
+        }
+
+        private void RButtonP2_Click(object sender, EventArgs e)
+        {
+            SetButtonToMap(SNESButton.R, 1);
+        }
+
+        private void StartButtonP2_Click(object sender, EventArgs e)
+        {
+            SetButtonToMap(SNESButton.Start, 1);
+        }
+
+        private void SelectButtonP2_Click(object sender, EventArgs e)
+        {
+            SetButtonToMap(SNESButton.Select, 1);
+        }
+
+        private void pictureBox14_Click(object sender, EventArgs e)
+        {
+            GamePadsManager.InteruptMaping();
         }
     }
 }
