@@ -2,9 +2,9 @@ using static SNEStm.GamePadsManager;
 
 namespace SNEStm
 {
-    public partial class SNEStm : Form
+    public partial class Form1 : Form
     {
-        public SNEStm()
+        public Form1()
         {
             InitializeComponent();
 
@@ -14,8 +14,14 @@ namespace SNEStm
         void HandleApplicationIdle(object sender, EventArgs e)
         {
             GamePadsManager.Update();
+            UsbWorker.Update();
             DebugText.Text = s_DebugText;
             DebugText2.Text = s_DebugText2;
+
+            if(UsbWorker.HIDDevice != null)
+            {
+                HIDDeviceName.Text = UsbWorker.HIDDevice.GetManufacturer() + "\n" + UsbWorker.s_DebugText;
+            }
         }
 
         private void pictureBox1_Click(object sender, EventArgs e)

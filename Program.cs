@@ -1,3 +1,5 @@
+using HidApi;
+
 namespace SNEStm
 {
     internal static class Program
@@ -11,7 +13,9 @@ namespace SNEStm
             // To customize application configuration such as set high DPI settings or default font,
             // see https://aka.ms/applicationconfiguration.
             ApplicationConfiguration.Initialize();
-            Application.Run(new SNEStm());
+            Application.Run(new Form1());
+
+            Hid.Exit();
         }
     }
 }

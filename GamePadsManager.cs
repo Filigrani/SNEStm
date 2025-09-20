@@ -212,5 +212,25 @@ namespace SNEStm
                 s_PlayerPads[Port] = s_Pads[PadIndex-1];
             }
         }
+
+        public static ReadOnlySpan<byte> GetInputs()
+        {
+            List<byte> Buffer = new List<byte>();
+            int Pos = 0;
+            
+            for (int i = 0; i != 2;i++)
+            {
+                GamePadInstance Pad = s_PlayerPads[i];
+                if (Pad != null)
+                {
+                    byte[] InputData = Pad.GetInputs();
+                    Buffer.InsertRange(Pos, InputData);
+                    Pos += InputData.Length;
+                }
+            }
+            Buffer.Insert(0, 0x0);
+
+            return (ReadOnlySpan<byte>)Buffer.ToArray();
+        }
     }
 }
