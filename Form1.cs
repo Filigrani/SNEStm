@@ -7,18 +7,17 @@ namespace SNEStm
         public Form1()
         {
             InitializeComponent();
-
-            Application.Idle += HandleApplicationIdle;
+            Task.Run(Update);
         }
 
-        void HandleApplicationIdle(object sender, EventArgs e)
+        public void Update()
         {
             GamePadsManager.Update();
             UsbWorker.Update();
             DebugText.Text = s_DebugText;
             DebugText2.Text = s_DebugText2;
 
-            if(UsbWorker.HIDDevice != null)
+            if (UsbWorker.HIDDevice != null)
             {
                 HIDDeviceName.Text = UsbWorker.HIDDevice.GetManufacturer() + "\n" + UsbWorker.s_DebugText;
             }
@@ -233,6 +232,11 @@ namespace SNEStm
         private void pictureBox14_Click(object sender, EventArgs e)
         {
             GamePadsManager.InteruptMaping();
+        }
+
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+           
         }
     }
 }

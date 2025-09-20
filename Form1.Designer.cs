@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
             pictureBox1 = new PictureBox();
             XButtonP1 = new PictureBox();
             BButtonP1 = new PictureBox();
@@ -61,6 +62,7 @@
             AutoAssign2 = new Button();
             DebugText2 = new Label();
             HIDDeviceName = new Label();
+            timer1 = new System.Windows.Forms.Timer(components);
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)XButtonP1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)BButtonP1).BeginInit();
@@ -488,6 +490,12 @@
             HIDDeviceName.TabIndex = 41;
             HIDDeviceName.Text = "label1";
             // 
+            // timer1
+            // 
+            timer1.Enabled = true;
+            timer1.Interval = 1;
+            timer1.Tick += timer1_Tick;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -595,5 +603,6 @@
         public Button AutoAssign2;
         public Label DebugText2;
         public Label HIDDeviceName;
+        private System.Windows.Forms.Timer timer1;
     }
 }
