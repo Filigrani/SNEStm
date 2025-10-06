@@ -41,6 +41,33 @@ namespace SNEStm
 
         };
 
+        public class DpadOverAxis
+        {
+            public bool m_Up = false;
+            public bool m_Down = false;
+            public bool m_Left = false;
+            public bool m_Right = false;
+
+            public DpadOverAxis(short X, short Y)
+            {
+                if(X < 0)
+                {
+                    m_Left = true;
+                }else if(X > 0)
+                {
+                    m_Right = true;
+                }
+
+                if(Y > 0)
+                {
+                    m_Up = true;
+                }else if(Y < 0)
+                {
+                    m_Down = true;
+                }
+            }
+        }
+
 
         public GamePadInstance(UserIndex Index)
         {
@@ -74,11 +101,58 @@ namespace SNEStm
 
         public void ProcessMapping(State CurrentState)
         {
+            DpadOverAxis Dpad = new DpadOverAxis(CurrentState.Gamepad.LeftThumbX, CurrentState.Gamepad.LeftThumbY);
+            DpadOverAxis LastDpad = new DpadOverAxis(s_LastState.Gamepad.LeftThumbX, s_LastState.Gamepad.LeftThumbY);
             for (int i = 0; i != s_BindableButtons.Count; i++)
             {
                 GamepadButtonFlags ButtonToCheck = s_BindableButtons[i];
+
+                bool NewState = ButtonToCheck == GamepadButtonFlags.None ? false : CurrentState.Gamepad.Buttons.HasFlag(ButtonToCheck);
+                bool OldState = s_LastState.Gamepad.Buttons.HasFlag(ButtonToCheck);
+
+                if (!NewState)
+                {
+                    if (ButtonToCheck == GamepadButtonFlags.DPadUp && Dpad.m_Up)
+                    {
+                        NewState = true;
+                    }
+                    else if (ButtonToCheck == GamepadButtonFlags.DPadDown && Dpad.m_Down)
+                    {
+                        NewState = true;
+                    }
+                    else if (ButtonToCheck == GamepadButtonFlags.DPadLeft && Dpad.m_Left)
+                    {
+                        NewState = true;
+                    }
+                    else if (ButtonToCheck == GamepadButtonFlags.DPadRight && Dpad.m_Right)
+                    {
+                        NewState = true;
+                    }
+                }
+
+                if (!OldState)
+                {
+                    if (ButtonToCheck == GamepadButtonFlags.DPadUp && LastDpad.m_Up)
+                    {
+                        OldState = true;
+                    }
+                    else if (ButtonToCheck == GamepadButtonFlags.DPadDown && LastDpad.m_Down)
+                    {
+                        OldState = true;
+                    }
+                    else if (ButtonToCheck == GamepadButtonFlags.DPadLeft && LastDpad.m_Left)
+                    {
+                        OldState = true;
+                    }
+                    else if (ButtonToCheck == GamepadButtonFlags.DPadRight && LastDpad.m_Right)
+                    {
+                        OldState = true;
+                    }
+                }
+
+
                 // Если до этого кнопка не была нажата, а теперь она нажата, тригерим бинд.
-                if(!s_LastState.Gamepad.Buttons.HasFlag(ButtonToCheck) && CurrentState.Gamepad.Buttons.HasFlag(ButtonToCheck))
+                if (!OldState && NewState)
                 {
                     GamePadsManager.MapButton(this, ButtonToCheck);
                     break;
@@ -94,9 +168,30 @@ namespace SNEStm
 
                 GamepadButtonFlags ButtonToCheck = m_MappedButtons[i];
 
+                DpadOverAxis Dpad = new DpadOverAxis(CurrentState.Gamepad.LeftThumbX, CurrentState.Gamepad.LeftThumbY);
 
                 bool OldState = m_SNESButtonsState[i];
                 bool NewState = ButtonToCheck == GamepadButtonFlags.None ? false : CurrentState.Gamepad.Buttons.HasFlag(ButtonToCheck);
+
+                if (!NewState)
+                {
+                    if(ButtonToCheck == GamepadButtonFlags.DPadUp && Dpad.m_Up)
+                    {
+                        NewState = true;
+                    }
+                    else if (ButtonToCheck == GamepadButtonFlags.DPadDown && Dpad.m_Down)
+                    {
+                        NewState = true;
+                    }
+                    else if (ButtonToCheck == GamepadButtonFlags.DPadLeft && Dpad.m_Left)
+                    {
+                        NewState = true;
+                    }
+                    else if (ButtonToCheck == GamepadButtonFlags.DPadRight && Dpad.m_Right)
+                    {
+                        NewState = true;
+                    }
+                }
 
                 if(NewState != OldState)
                 {
