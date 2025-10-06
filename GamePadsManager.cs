@@ -42,6 +42,8 @@ namespace SNEStm
         public static string s_DebugText2 = "test";
         private static int s_DebugIncrement = 0;
 
+        public static bool m_HasChangedInput = false;
+
 
         public static void AutoMap(int Port)
         {
@@ -145,6 +147,7 @@ namespace SNEStm
                     }
 
                     UpdateVisual(Pad.m_SNESButtonsState, i);
+
                 }
             }
             s_DebugIncrement++;
@@ -155,6 +158,15 @@ namespace SNEStm
                 {
                     s_MapingBlinkFrame = 0;
                 }
+            }
+
+            if ((s_PlayerPads[0] != null && s_PlayerPads[1] != null) && (s_PlayerPads[0].m_ChangedInput || s_PlayerPads[1].m_ChangedInput))
+            {
+                m_HasChangedInput = true;
+            }
+            else
+            {
+                m_HasChangedInput = false;
             }
         }
 
@@ -250,9 +262,19 @@ namespace SNEStm
                 GamePadInstance Pad = s_PlayerPads[i];
                 if (Pad != null)
                 {
-                    byte[] InputData = Pad.GetInputs();
-                    Buffer.InsertRange(Pos, InputData);
-                    Pos += InputData.Length;
+                    bool[] InputData = Pad.GetInputs();
+                    int input = 0xFFFF;
+
+                    for (int j = 0; j < InputData.Length; j++)
+                    {
+                        if (InputData[j])
+                        {
+                            input &= ~(1 << j);
+                        }
+                    }
+
+                    Buffer.InsertRange(Pos, BitConverter.GetBytes(input));
+                    Pos += 2;
                 }
                 else
                 {

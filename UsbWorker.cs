@@ -1,6 +1,7 @@
 ﻿using HidApi;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,23 +19,26 @@ namespace SNEStm
         {
             if (HIDDevice != null)
             {
-                try
+                if (GamePadsManager.m_HasChangedInput)
                 {
-                    ReadOnlySpan<byte> SendData = GamePadsManager.GetInputs();
-
-                    // Use Write instead of SendFeatureReport
-                    HIDDevice.Write(SendData);
-
-                    ReadOnlySpan<byte> Data = HIDDevice.Read(64);
-                    if (Data.Length > 0)
+                    try
                     {
-                        s_DebugText =  $"Sent {BitConverter.ToString(SendData.ToArray())}\nSTM  {BitConverter.ToString(Data.ToArray())}";
+                        ReadOnlySpan<byte> SendData = GamePadsManager.GetInputs();
+
+                        // Use Write instead of SendFeatureReport
+                        HIDDevice.Write(SendData);
+
+                        ReadOnlySpan<byte> Data = HIDDevice.Read(64);
+                        if (Data.Length > 0)
+                        {
+                            s_DebugText = $"Sent {BitConverter.ToString(SendData.ToArray())}\nSTM  {BitConverter.ToString(Data.ToArray())}";
+                        }
                     }
-                }
-                catch (HidApi.HidException ex)
-                {
-                    Console.WriteLine($"HID Error: {ex.Message}");
-                    HIDDevice = null;
+                    catch (HidApi.HidException ex)
+                    {
+                        Console.WriteLine($"HID Error: {ex.Message}");
+                        HIDDevice = null;
+                    }
                 }
             }
             else

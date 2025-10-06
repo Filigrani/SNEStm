@@ -17,11 +17,11 @@ namespace SNEStm
         // Так и приобразовывать лишний раз не надо, и захардкожаную константу мы тоже в ручную не пишем,
         // и если чё призайдёт она всегда заскейлиться от enum'а в любом случаии.
 
-
+        public bool m_ChangedInput = false;
         public GamepadButtonFlags[] m_MappedButtons = new GamepadButtonFlags[c_SNESButtonsCount]; // XInput -> SNES Button ID
         public bool[] m_SNESButtonsState = new bool[c_SNESButtonsCount]; // Зажата или отжата SNES кнопка
 
-        private byte[] s_InputsData = new byte[c_SNESButtonsCount]; // Готовый массив байт для отправки по USB. По сути тот же 
+        private bool[] s_InputsData = new bool[c_SNESButtonsCount]; // Готовый массив байт для отправки по USB. По сути тот же 
                                                                     // m_SNESButtonsState но в байтовом эквиваленте что бы лушний раз потом
                                                                     // не конвертировать булы в байты.
 
@@ -74,7 +74,7 @@ namespace SNEStm
             m_Pad = new Controller(Index);
         }
 
-        public byte[] GetInputs()
+        public bool[] GetInputs()
         {
             return s_InputsData;
         }
@@ -94,7 +94,7 @@ namespace SNEStm
                 ProcessMapping(CurrentState);
             }
 
-            bool Changed = UpdateButtons(CurrentState);
+            m_ChangedInput = UpdateButtons(CurrentState);
 
             s_LastState = CurrentState;
         }
@@ -196,7 +196,7 @@ namespace SNEStm
                 if(NewState != OldState)
                 {
                     m_SNESButtonsState[i] = NewState;
-                    s_InputsData[i] = NewState ? (byte) 1 : (byte) 0; // сразу задаём в байтовом массиве.
+                    s_InputsData[i] = NewState; // сразу задаём в буловый массиве.
                     Changed = true;
                 }
             }
