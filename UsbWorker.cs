@@ -12,17 +12,29 @@ namespace SNEStm
         public static Device HIDDevice = null;
         private static bool s_Connected = false;
         public static string s_DebugText = string.Empty;
-        
-        
+
+
         public static void Update()
         {
-            if(HIDDevice != null)
+            if (HIDDevice != null)
             {
-                HIDDevice.SendFeatureReport(GamePadsManager.GetInputs());
-                ReadOnlySpan<byte> Data = HIDDevice.Read(64);
-                if(Data.Length > 0)
+                try
                 {
-                    s_DebugText = BitConverter.ToString(Data.ToArray());
+                    ReadOnlySpan<byte> SendData = GamePadsManager.GetInputs();
+
+                    // Use Write instead of SendFeatureReport
+                    HIDDevice.Write(SendData);
+
+                    ReadOnlySpan<byte> Data = HIDDevice.Read(64);
+                    if (Data.Length > 0)
+                    {
+                        s_DebugText =  $"Sent {BitConverter.ToString(SendData.ToArray())}\nSTM  {BitConverter.ToString(Data.ToArray())}";
+                    }
+                }
+                catch (HidApi.HidException ex)
+                {
+                    Console.WriteLine($"HID Error: {ex.Message}");
+                    HIDDevice = null;
                 }
             }
             else
@@ -36,11 +48,9 @@ namespace SNEStm
         {
             foreach (var deviceInfo in Hid.Enumerate())
             {
-                using var device = deviceInfo.ConnectToDevice();
-
                 if(deviceInfo.VendorId == 0xcafe)
                 {
-                    HIDDevice = device;
+                    HIDDevice = new Device(deviceInfo.Path);
                     HIDDevice.SetNonBlocking(false);
                     s_Connected = true;
                     break;

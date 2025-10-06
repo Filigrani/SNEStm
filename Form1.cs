@@ -12,14 +12,10 @@ namespace SNEStm
 
         public void Update()
         {
-            GamePadsManager.Update();
-            UsbWorker.Update();
-            DebugText.Text = s_DebugText;
-            DebugText2.Text = s_DebugText2;
-
-            if (UsbWorker.HIDDevice != null)
+            while (true)
             {
-                HIDDeviceName.Text = UsbWorker.HIDDevice.GetManufacturer() + "\n" + UsbWorker.s_DebugText;
+                GamePadsManager.Update();
+                UsbWorker.Update();
             }
         }
 
@@ -161,12 +157,12 @@ namespace SNEStm
 
         private void AutoAssign_Click(object sender, EventArgs e)
         {
-            SetButtonToMap(SNESButton.Up, 0, false);
+            AutoMap(0);
         }
 
         private void AutoAssign2_Click(object sender, EventArgs e)
         {
-            SetButtonToMap(SNESButton.Up, 1, false);
+            AutoMap(1);
         }
 
         private void UpButtonP2_Click(object sender, EventArgs e)
@@ -236,7 +232,13 @@ namespace SNEStm
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-           
+            DebugText.Text = s_DebugText;
+            DebugText2.Text = s_DebugText2;
+
+            if (UsbWorker.HIDDevice != null)
+            {
+                HIDDeviceName.Text = UsbWorker.HIDDevice.GetManufacturer() + "\n" + UsbWorker.s_DebugText;
+            }
         }
     }
 }

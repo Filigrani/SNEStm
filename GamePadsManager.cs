@@ -28,24 +28,33 @@ namespace SNEStm
         public static Dictionary<SNESButton, PictureBox> s_Player2ButtonImages = new Dictionary<SNESButton, PictureBox>();
 
         private static SNESButton s_ButtonToMap = SNESButton.Up;
+        private static int s_AutoMapIndex = 0;
         private static int s_PortMapTo = 1;
         private static bool s_MappingActive = false;
-        private static bool s_EndMapingAfterOneButton = true;
 
         // Моргание кнопки во время биндинга
         private static int s_MapingBlinkFrame = 0; 
-        private const int c_BlinkFrameTime = 200; // Сколько занимает цикл моргания
-        private const int c_BlinkFrameWindow = 120; // Сколько кнопка видема во время моргания
+        private const int c_BlinkFrameTime = 5; // Сколько занимает цикл моргания
+        private const int c_BlinkFrameWindow = 3; // Сколько кнопка видема во время моргания
 
 
         public static string s_DebugText = "test";
         public static string s_DebugText2 = "test";
         private static int s_DebugIncrement = 0;
 
-        public static void SetButtonToMap(SNESButton Button, int Port, bool EndMapingAfterOneButton = true)
+
+        public static void AutoMap(int Port)
+        {
+            s_AutoMapIndex = 0;
+            s_ButtonToMap = s_BindingOrder[s_AutoMapIndex];
+            s_PortMapTo = Port;
+            s_MappingActive = true;
+        }
+
+        public static void SetButtonToMap(SNESButton Button, int Port)
         {
             // Если мы уже настраиваем кнопку, не пытаемся настроить другую.
-            if(EndMapingAfterOneButton && s_MappingActive)
+            if(s_MappingActive)
             {
                 return;
             }
@@ -55,49 +64,67 @@ namespace SNEStm
             {
                 return;
             }
-            
-            
+
+            s_AutoMapIndex = -1;
             s_ButtonToMap = Button;
             s_PortMapTo = Port;
             s_MappingActive = true;
-            s_EndMapingAfterOneButton = EndMapingAfterOneButton;
         }
 
         public static void NextButtonToMap()
         {
-            s_ButtonToMap++;
-            if (s_ButtonToMap == SNESButton.Count)
+            s_AutoMapIndex++;
+            if (s_AutoMapIndex == s_BindingOrder.Count)
             {
                 InteruptMaping();
+            }
+            else
+            {
+                s_ButtonToMap = s_BindingOrder[s_AutoMapIndex];
             }
         }
 
         public static void InteruptMaping()
         {
             s_MappingActive = false;
-            s_EndMapingAfterOneButton = true;
+            s_AutoMapIndex = -1;
         }
-
 
         public enum SNESButton
         {
-            Up,
-            Down,
-            Left,
-            Right,
-            A,
-            B,
-            X,
-            Y,
-            L,
+            Unused_1,
+            Unused_2,
+            Unused_3,
+            Unused_4,
+
+
             R,
-            Start,
+            L,
+            X,
+            A,
+            Right,
+            Left,
+            Down,
+            Up,
             Select,
+            Start,
+            Y,
+            B,
 
             Count,
         }
 
         public const int c_SNESButtonsCount = (int)SNESButton.Count;
+
+        public static List<SNESButton> s_BindingOrder = new List<SNESButton>() 
+        { 
+            SNESButton.A, SNESButton.B, 
+            SNESButton.Y, SNESButton.X, 
+            SNESButton.Up, SNESButton.Down, 
+            SNESButton.Left, SNESButton.Right, 
+            SNESButton.L, SNESButton.R,
+            SNESButton.Start, SNESButton.Select 
+        };
 
         public static void Update()
         {
@@ -176,7 +203,7 @@ namespace SNEStm
         {
             Pad.MapButton(s_ButtonToMap, Button, s_PortMapTo);
 
-            if (s_EndMapingAfterOneButton)
+            if (s_AutoMapIndex == -1)
             {
                 InteruptMaping();
             }
@@ -225,6 +252,11 @@ namespace SNEStm
                 {
                     byte[] InputData = Pad.GetInputs();
                     Buffer.InsertRange(Pos, InputData);
+                    Pos += InputData.Length;
+                }
+                else
+                {
+                    byte[] InputData = new byte[64];
                     Pos += InputData.Length;
                 }
             }
