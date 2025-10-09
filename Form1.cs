@@ -239,6 +239,15 @@ namespace SNEStm
             {
                 HIDDeviceName.Text = UsbWorker.HIDDevice.GetManufacturer() + "\n" + UsbWorker.s_DebugText;
             }
+            for (int i = 0; i != 2; i++) // != быстрее чем <=, а юзать s_Pads.Length, без толку, ибо мы знаем что число всегда 2.
+            {
+                GamePadInstance Pad = s_PlayerPads[i];
+
+                if (Pad != null)
+                {
+                    UpdateVisual(Pad.m_SNESButtonsState, i);
+                }
+            }
         }
     }
 }

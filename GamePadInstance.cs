@@ -17,13 +17,12 @@ namespace SNEStm
         // Так и приобразовывать лишний раз не надо, и захардкожаную константу мы тоже в ручную не пишем,
         // и если чё призайдёт она всегда заскейлиться от enum'а в любом случаии.
 
-        public bool m_ChangedInput = false;
         public GamepadButtonFlags[] m_MappedButtons = new GamepadButtonFlags[c_SNESButtonsCount]; // XInput -> SNES Button ID
         public bool[] m_SNESButtonsState = new bool[c_SNESButtonsCount]; // Зажата или отжата SNES кнопка
 
-        private bool[] s_InputsData = new bool[c_SNESButtonsCount]; // Готовый массив байт для отправки по USB. По сути тот же 
-                                                                    // m_SNESButtonsState но в байтовом эквиваленте что бы лушний раз потом
-                                                                    // не конвертировать булы в байты.
+        public int m_InputsMask = 0xFFFF;
+        public int m_LastInputs = 0xFFFF;
+        public bool m_SentData = true;
 
         private State s_LastState = new State();
 
@@ -74,9 +73,9 @@ namespace SNEStm
             m_Pad = new Controller(Index);
         }
 
-        public bool[] GetInputs()
+        public int GetInputs()
         {
-            return s_InputsData;
+            return m_InputsMask;
         }
 
         public void Update(bool IsMappingMode = false)
@@ -94,7 +93,13 @@ namespace SNEStm
                 ProcessMapping(CurrentState);
             }
 
-            m_ChangedInput = UpdateButtons(CurrentState);
+            m_InputsMask = UpdateButtons(CurrentState);
+
+            if (m_InputsMask != m_LastInputs)
+            {
+                m_LastInputs = m_InputsMask;
+                m_SentData = false;
+            }
 
             s_LastState = CurrentState;
         }
@@ -160,9 +165,10 @@ namespace SNEStm
             }
         }
 
-        public bool UpdateButtons(State CurrentState)
+        public int UpdateButtons(State CurrentState)
         {
-            bool Changed = false;
+            int input = 0xFFFF;
+
             for (int i = 0; i != c_SNESButtonsCount; i++)
             {
 
@@ -175,7 +181,7 @@ namespace SNEStm
 
                 if (!NewState)
                 {
-                    if(ButtonToCheck == GamepadButtonFlags.DPadUp && Dpad.m_Up)
+                    if (ButtonToCheck == GamepadButtonFlags.DPadUp && Dpad.m_Up)
                     {
                         NewState = true;
                     }
@@ -193,15 +199,14 @@ namespace SNEStm
                     }
                 }
 
-                if(NewState != OldState)
+                m_SNESButtonsState[i] = NewState; // Для визуалайзера
+
+                if (NewState)
                 {
-                    m_SNESButtonsState[i] = NewState;
-                    s_InputsData[i] = NewState; // сразу задаём в буловый массиве.
-                    Changed = true;
+                    input &= ~(1 << i);
                 }
             }
-
-            return Changed;
+            return input;
         }
 
         public void MapButton(SNESButton Snes, GamepadButtonFlags FlagButton, int Port)

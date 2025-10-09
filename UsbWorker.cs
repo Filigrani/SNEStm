@@ -19,7 +19,7 @@ namespace SNEStm
         {
             if (HIDDevice != null)
             {
-                if (GamePadsManager.m_HasChangedInput)
+                if (GamePadsManager.HasChange())
                 {
                     try
                     {
@@ -28,7 +28,7 @@ namespace SNEStm
                         // Use Write instead of SendFeatureReport
                         HIDDevice.Write(SendData);
 
-                        ReadOnlySpan<byte> Data = HIDDevice.Read(64);
+                        ReadOnlySpan<byte> Data = HIDDevice.Read(SendData.Length);
                         if (Data.Length > 0)
                         {
                             s_DebugText = $"Sent {BitConverter.ToString(SendData.ToArray())}\nSTM  {BitConverter.ToString(Data.ToArray())}";

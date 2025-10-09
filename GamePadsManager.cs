@@ -40,9 +40,8 @@ namespace SNEStm
 
         public static string s_DebugText = "test";
         public static string s_DebugText2 = "test";
-        private static int s_DebugIncrement = 0;
 
-        public static bool m_HasChangedInput = false;
+        private static int s_DebugIncrement = 0;
 
 
         public static void AutoMap(int Port)
@@ -108,8 +107,8 @@ namespace SNEStm
             Left,
             Down,
             Up,
-            Select,
             Start,
+            Select,
             Y,
             B,
 
@@ -145,9 +144,6 @@ namespace SNEStm
                     {
                         s_DebugText2 = Pad.GetDebugText() + " tick " + s_DebugIncrement;
                     }
-
-                    UpdateVisual(Pad.m_SNESButtonsState, i);
-
                 }
             }
             s_DebugIncrement++;
@@ -158,15 +154,6 @@ namespace SNEStm
                 {
                     s_MapingBlinkFrame = 0;
                 }
-            }
-
-            if ((s_PlayerPads[0] != null && s_PlayerPads[1] != null) && (s_PlayerPads[0].m_ChangedInput || s_PlayerPads[1].m_ChangedInput))
-            {
-                m_HasChangedInput = true;
-            }
-            else
-            {
-                m_HasChangedInput = false;
             }
         }
 
@@ -252,6 +239,19 @@ namespace SNEStm
             }
         }
 
+        public static bool HasChange()
+        {
+            for (int i = 0; i != 2; i++)
+            {
+                GamePadInstance Pad = s_PlayerPads[i];
+                if(Pad != null && !Pad.m_SentData)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
         public static ReadOnlySpan<byte> GetInputs()
         {
             List<byte> Buffer = new List<byte>();
@@ -260,27 +260,16 @@ namespace SNEStm
             for (int i = 0; i != 2;i++)
             {
                 GamePadInstance Pad = s_PlayerPads[i];
+
+                int PadInput = 0xFFFF;
+
                 if (Pad != null)
                 {
-                    bool[] InputData = Pad.GetInputs();
-                    int input = 0xFFFF;
-
-                    for (int j = 0; j < InputData.Length; j++)
-                    {
-                        if (InputData[j])
-                        {
-                            input &= ~(1 << j);
-                        }
-                    }
-
-                    Buffer.InsertRange(Pos, BitConverter.GetBytes(input));
-                    Pos += 2;
+                    PadInput = Pad.GetInputs();
+                    Pad.m_SentData = true;
                 }
-                else
-                {
-                    byte[] InputData = new byte[64];
-                    Pos += InputData.Length;
-                }
+                Buffer.InsertRange(Pos, BitConverter.GetBytes(PadInput));
+                Pos += 2;
             }
             Buffer.Insert(0, 0x0);
 
