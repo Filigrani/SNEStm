@@ -63,6 +63,7 @@
             DebugText2 = new Label();
             HIDDeviceName = new Label();
             timer1 = new System.Windows.Forms.Timer(components);
+            ManualInput = new CheckBox();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)XButtonP1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)BButtonP1).BeginInit();
@@ -496,12 +497,24 @@
             timer1.Interval = 1;
             timer1.Tick += timer1_Tick;
             // 
+            // ManualInput
+            // 
+            ManualInput.AutoSize = true;
+            ManualInput.Location = new Point(352, 140);
+            ManualInput.Name = "ManualInput";
+            ManualInput.Size = new Size(97, 19);
+            ManualInput.TabIndex = 42;
+            ManualInput.Text = "Manual input";
+            ManualInput.UseVisualStyleBackColor = true;
+            ManualInput.CheckedChanged += ManualInput_CheckedChanged;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(107, 107, 107);
             ClientSize = new Size(800, 450);
+            Controls.Add(ManualInput);
             Controls.Add(HIDDeviceName);
             Controls.Add(DebugText2);
             Controls.Add(AutoAssign2);
@@ -604,5 +617,6 @@
         public Label DebugText2;
         public Label HIDDeviceName;
         private System.Windows.Forms.Timer timer1;
+        private CheckBox ManualInput;
     }
 }

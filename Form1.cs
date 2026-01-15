@@ -92,6 +92,7 @@ namespace SNEStm
             {
                 GamePadSelect1.Items.Add(padName);
             }
+            GamePadSelect1.Items.Add("Mouse");
             GamePadSelect1.SelectedItem = GamePadSelect1.Items[0];
             GamePadSelect1.SelectedIndex = 0;
 
@@ -248,6 +249,11 @@ namespace SNEStm
                     UpdateVisual(Pad.m_SNESButtonsState, i);
                 }
             }
+        }
+
+        private void ManualInput_CheckedChanged(object sender, EventArgs e)
+        {
+            GamePadsManager.s_ManualInput = ManualInput.Checked;
         }
     }
 }

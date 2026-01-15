@@ -13,6 +13,7 @@ namespace SNEStm
         public static Device HIDDevice = null;
         private static bool s_Connected = false;
         public static string s_DebugText = string.Empty;
+        public const bool s_ReadBack = false;
 
 
         public static void Update()
@@ -28,10 +29,17 @@ namespace SNEStm
                         // Use Write instead of SendFeatureReport
                         HIDDevice.Write(SendData);
 
-                        ReadOnlySpan<byte> Data = HIDDevice.Read(SendData.Length);
-                        if (Data.Length > 0)
+                        if (s_ReadBack)
                         {
-                            s_DebugText = $"Sent {BitConverter.ToString(SendData.ToArray())}\nSTM  {BitConverter.ToString(Data.ToArray())}";
+                            ReadOnlySpan<byte> Data = HIDDevice.Read(SendData.Length);
+                            if (Data.Length > 0)
+                            {
+                                s_DebugText = $"Sent {BitConverter.ToString(SendData.ToArray())}\nSTM  {BitConverter.ToString(Data.ToArray())}";
+                            }
+                        }
+                        else
+                        {
+                            s_DebugText = $"Sent {BitConverter.ToString(SendData.ToArray())}";
                         }
                     }
                     catch (HidApi.HidException ex)

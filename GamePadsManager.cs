@@ -16,6 +16,7 @@ namespace SNEStm
             new GamePadInstance(UserIndex.Two),
             new GamePadInstance(UserIndex.Three),
             new GamePadInstance(UserIndex.Four),
+            new GamePadInstance(true),
         };
 
         public static GamePadInstance[] s_PlayerPads =
@@ -31,6 +32,7 @@ namespace SNEStm
         private static int s_AutoMapIndex = 0;
         private static int s_PortMapTo = 1;
         private static bool s_MappingActive = false;
+        public static bool s_ManualInput = false;
 
         // Моргание кнопки во время биндинга
         private static int s_MapingBlinkFrame = 0; 
@@ -54,6 +56,12 @@ namespace SNEStm
 
         public static void SetButtonToMap(SNESButton Button, int Port)
         {
+            if (GamePadsManager.s_ManualInput)
+            {
+                
+                return;
+            }
+            
             // Если мы уже настраиваем кнопку, не пытаемся настроить другую.
             if(s_MappingActive)
             {
@@ -93,10 +101,10 @@ namespace SNEStm
 
         public enum SNESButton
         {
-            Unused_1,
-            Unused_2,
-            Unused_3,
-            Unused_4,
+            MouseAlwaysZero,
+            MouseSignatureAndButtons,
+            MouseX,
+            MouseY,
 
 
             R,
@@ -190,7 +198,7 @@ namespace SNEStm
                 }
                 if (img != null)
                 {
-                    if (ButtonStates[i] || (s_MappingActive && s_ButtonToMap == (SNESButton)i && s_PortMapTo == PlayerPort && s_MapingBlinkFrame > c_BlinkFrameWindow))
+                    if ((ButtonStates[i] && !s_MappingActive) || (s_MappingActive && s_ButtonToMap == (SNESButton)i && s_PortMapTo == PlayerPort && s_MapingBlinkFrame > c_BlinkFrameWindow))
                     {
                         img.Image = img.InitialImage;
                     }
@@ -255,22 +263,31 @@ namespace SNEStm
         public static ReadOnlySpan<byte> GetInputs()
         {
             List<byte> Buffer = new List<byte>();
-            int Pos = 0;
-            
-            for (int i = 0; i != 2;i++)
+
+            //for (int i = 0; i != 2;i++)
+            //{
+            //    GamePadInstance Pad = s_PlayerPads[i];
+
+            //    int PadInput = 0xFFFF;
+
+            //    if (Pad != null)
+            //    {
+            //        PadInput = Pad.GetInputs();
+            //        Pad.m_SentData = true;
+            //    }
+            //    Buffer.InsertRange(Pos, BitConverter.GetBytes(PadInput));
+            //    Pos += 2;
+            //}
+            GamePadInstance Pad = s_PlayerPads[0];
+
+            int PadInput = 0xFFFF;
+
+            if (Pad != null)
             {
-                GamePadInstance Pad = s_PlayerPads[i];
-
-                int PadInput = 0xFFFF;
-
-                if (Pad != null)
-                {
-                    PadInput = Pad.GetInputs();
-                    Pad.m_SentData = true;
-                }
-                Buffer.InsertRange(Pos, BitConverter.GetBytes(PadInput));
-                Pos += 2;
+                PadInput = Pad.GetInputs();
+                Pad.m_SentData = true;
             }
+            Buffer.InsertRange(0, BitConverter.GetBytes(PadInput));
             Buffer.Insert(0, 0x0);
 
             return (ReadOnlySpan<byte>)Buffer.ToArray();
