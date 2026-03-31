@@ -15,7 +15,7 @@ namespace NESEps
             while (true)
             {
                 GamePadsManager.Update();
-                UsbWorker.Update();
+                TCPWorker.Update();
             }
         }
 
@@ -26,62 +26,62 @@ namespace NESEps
 
         private void UpButtonP1_Click(object sender, EventArgs e)
         {
-            SetButtonToMap(SNESButton.Up, 0);
+            SetButtonToMap(NESButton.Up, 0);
         }
 
         private void RightButtonP1_Click(object sender, EventArgs e)
         {
-            SetButtonToMap(SNESButton.Right, 0);
+            SetButtonToMap(NESButton.Right, 0);
         }
 
         private void DownButtonP1_Click(object sender, EventArgs e)
         {
-            SetButtonToMap(SNESButton.Down, 0);
+            SetButtonToMap(NESButton.Down, 0);
         }
 
         private void LeftButtonP1_Click(object sender, EventArgs e)
         {
-            SetButtonToMap(SNESButton.Left, 0);
+            SetButtonToMap(NESButton.Left, 0);
         }
 
         private void AButtonP1_Click(object sender, EventArgs e)
         {
-            SetButtonToMap(SNESButton.A, 0);
+            SetButtonToMap(NESButton.A, 0);
         }
 
         private void BButtonP1_Click(object sender, EventArgs e)
         {
-            SetButtonToMap(SNESButton.B, 0);
+            SetButtonToMap(NESButton.B, 0);
         }
 
         private void XButtonP1_Click(object sender, EventArgs e)
         {
-            SetButtonToMap(SNESButton.X, 0);
+
         }
 
         private void YButtonP1_Click(object sender, EventArgs e)
         {
-            SetButtonToMap(SNESButton.Y, 0);
+
         }
 
         private void LButtonP1_Click(object sender, EventArgs e)
         {
-            SetButtonToMap(SNESButton.L, 0);
+
         }
 
         private void RButtonP1_Click(object sender, EventArgs e)
         {
-            SetButtonToMap(SNESButton.R, 0);
+
         }
 
         private void StartButtonP1_Click(object sender, EventArgs e)
         {
-            SetButtonToMap(SNESButton.Start, 0);
+            SetButtonToMap(NESButton.Start, 0);
         }
 
         private void SelectButtonP1_Click(object sender, EventArgs e)
         {
-            SetButtonToMap(SNESButton.Select, 0);
+            SetButtonToMap(NESButton.Select, 0);
         }
 
         public void RefreshGamepads()
@@ -110,38 +110,29 @@ namespace NESEps
         {
             RefreshGamepads();
 
-            s_Player1ButtonImages.Add(SNESButton.A, AButtonP1);
-            s_Player1ButtonImages.Add(SNESButton.B, BButtonP1);
-            s_Player1ButtonImages.Add(SNESButton.X, XButtonP1);
-            s_Player1ButtonImages.Add(SNESButton.Y, YButtonP1);
+            s_Player1ButtonImages.Add(NESButton.A, AButtonP1);
+            s_Player1ButtonImages.Add(NESButton.B, BButtonP1);
 
-            s_Player1ButtonImages.Add(SNESButton.Up, UpButtonP1);
-            s_Player1ButtonImages.Add(SNESButton.Left, LeftButtonP1);
-            s_Player1ButtonImages.Add(SNESButton.Right, RightButtonP1);
-            s_Player1ButtonImages.Add(SNESButton.Down, DownButtonP1);
+            s_Player1ButtonImages.Add(NESButton.Up, UpButtonP1);
+            s_Player1ButtonImages.Add(NESButton.Left, LeftButtonP1);
+            s_Player1ButtonImages.Add(NESButton.Right, RightButtonP1);
+            s_Player1ButtonImages.Add(NESButton.Down, DownButtonP1);
 
-            s_Player1ButtonImages.Add(SNESButton.L, LButtonP1);
-            s_Player1ButtonImages.Add(SNESButton.R, RButtonP1);
 
-            s_Player1ButtonImages.Add(SNESButton.Start, StartButtonP1);
-            s_Player1ButtonImages.Add(SNESButton.Select, SelectButtonP1);
+            s_Player1ButtonImages.Add(NESButton.Start, StartButtonP1);
+            s_Player1ButtonImages.Add(NESButton.Select, SelectButtonP1);
             UnlitButtonsByForce(0);
 
-            s_Player2ButtonImages.Add(SNESButton.A, AButtonP2);
-            s_Player2ButtonImages.Add(SNESButton.B, BButtonP2);
-            s_Player2ButtonImages.Add(SNESButton.X, XButtonP2);
-            s_Player2ButtonImages.Add(SNESButton.Y, YButtonP2);
+            s_Player2ButtonImages.Add(NESButton.A, AButtonP2);
+            s_Player2ButtonImages.Add(NESButton.B, BButtonP2);
 
-            s_Player2ButtonImages.Add(SNESButton.Up, UpButtonP2);
-            s_Player2ButtonImages.Add(SNESButton.Left, LeftButtonP2);
-            s_Player2ButtonImages.Add(SNESButton.Right, RightButtonP2);
-            s_Player2ButtonImages.Add(SNESButton.Down, DownButtonP2);
+            s_Player2ButtonImages.Add(NESButton.Up, UpButtonP2);
+            s_Player2ButtonImages.Add(NESButton.Left, LeftButtonP2);
+            s_Player2ButtonImages.Add(NESButton.Right, RightButtonP2);
+            s_Player2ButtonImages.Add(NESButton.Down, DownButtonP2);
 
-            s_Player2ButtonImages.Add(SNESButton.L, LButtonP2);
-            s_Player2ButtonImages.Add(SNESButton.R, RButtonP2);
-
-            s_Player2ButtonImages.Add(SNESButton.Start, StartButtonP2);
-            s_Player2ButtonImages.Add(SNESButton.Select, SelectButtonP2);
+            s_Player2ButtonImages.Add(NESButton.Start, StartButtonP2);
+            s_Player2ButtonImages.Add(NESButton.Select, SelectButtonP2);
             UnlitButtonsByForce(1);
         }
 
@@ -168,62 +159,62 @@ namespace NESEps
 
         private void UpButtonP2_Click(object sender, EventArgs e)
         {
-            SetButtonToMap(SNESButton.Up, 1);
+            SetButtonToMap(NESButton.Up, 1);
         }
 
         private void RightButtonP2_Click(object sender, EventArgs e)
         {
-            SetButtonToMap(SNESButton.Right, 1);
+            SetButtonToMap(NESButton.Right, 1);
         }
 
         private void DownButtonP2_Click(object sender, EventArgs e)
         {
-            SetButtonToMap(SNESButton.Down, 1);
+            SetButtonToMap(NESButton.Down, 1);
         }
 
         private void LeftButtonP2_Click(object sender, EventArgs e)
         {
-            SetButtonToMap(SNESButton.Left, 1);
+            SetButtonToMap(NESButton.Left, 1);
         }
 
         private void AButtonP2_Click(object sender, EventArgs e)
         {
-            SetButtonToMap(SNESButton.A, 1);
+            SetButtonToMap(NESButton.A, 1);
         }
 
         private void BButtonP2_Click(object sender, EventArgs e)
         {
-            SetButtonToMap(SNESButton.B, 1);
+            SetButtonToMap(NESButton.B, 1);
         }
 
         private void XButtonP2_Click(object sender, EventArgs e)
         {
-            SetButtonToMap(SNESButton.X, 1);
+
         }
 
         private void YButtonP2_Click(object sender, EventArgs e)
         {
-            SetButtonToMap(SNESButton.Y, 1);
+
         }
 
         private void LButtonP2_Click(object sender, EventArgs e)
         {
-            SetButtonToMap(SNESButton.L, 1);
+
         }
 
         private void RButtonP2_Click(object sender, EventArgs e)
         {
-            SetButtonToMap(SNESButton.R, 1);
+
         }
 
         private void StartButtonP2_Click(object sender, EventArgs e)
         {
-            SetButtonToMap(SNESButton.Start, 1);
+            SetButtonToMap(NESButton.Start, 1);
         }
 
         private void SelectButtonP2_Click(object sender, EventArgs e)
         {
-            SetButtonToMap(SNESButton.Select, 1);
+            SetButtonToMap(NESButton.Select, 1);
         }
 
         private void pictureBox14_Click(object sender, EventArgs e)
@@ -235,11 +226,6 @@ namespace NESEps
         {
             DebugText.Text = s_DebugText;
             DebugText2.Text = s_DebugText2;
-
-            if (UsbWorker.HIDDevice != null)
-            {
-                HIDDeviceName.Text = UsbWorker.HIDDevice.GetManufacturer() + "\n" + UsbWorker.s_DebugText;
-            }
             for (int i = 0; i != 2; i++) // != быстрее чем <=, а юзать s_Pads.Length, без толку, ибо мы знаем что число всегда 2.
             {
                 GamePadInstance Pad = s_PlayerPads[i];

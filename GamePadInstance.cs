@@ -27,7 +27,6 @@ namespace NESEps
         public int m_InputsMask = 0xFFFF;
         public int m_LastInputs = 0xFFFF;
         public bool m_SentData = true;
-        public bool m_MouseMode = false;
         public int m_MouseSensitivity = 0;
 
         private State s_LastState = new State();
@@ -72,31 +71,21 @@ namespace NESEps
                 }
             }
         }
-        public GamePadInstance(bool Mouse)
-        {
-            m_Pad = null;
-            m_MouseMode = true;
-        }
 
         public GamePadInstance(UserIndex Index)
         {
             m_Pad = new Controller(Index);
 
-            MapButton(SNESButton.Up, GamepadButtonFlags.DPadUp, 0);
-            MapButton(SNESButton.Down, GamepadButtonFlags.DPadDown, 0);
-            MapButton(SNESButton.Left, GamepadButtonFlags.DPadLeft, 0);
-            MapButton(SNESButton.Right, GamepadButtonFlags.DPadRight, 0);
+            MapButton(NESButton.Up, GamepadButtonFlags.DPadUp, 0);
+            MapButton(NESButton.Down, GamepadButtonFlags.DPadDown, 0);
+            MapButton(NESButton.Left, GamepadButtonFlags.DPadLeft, 0);
+            MapButton(NESButton.Right, GamepadButtonFlags.DPadRight, 0);
 
-            MapButton(SNESButton.A, GamepadButtonFlags.B, 0);
-            MapButton(SNESButton.B, GamepadButtonFlags.A, 0);
-            MapButton(SNESButton.X, GamepadButtonFlags.Y, 0);
-            MapButton(SNESButton.Y, GamepadButtonFlags.X, 0);
+            MapButton(NESButton.A, GamepadButtonFlags.B, 0);
+            MapButton(NESButton.B, GamepadButtonFlags.A, 0);
 
-            MapButton(SNESButton.L, GamepadButtonFlags.LeftShoulder, 0);
-            MapButton(SNESButton.R, GamepadButtonFlags.RightShoulder, 0);
-
-            MapButton(SNESButton.Start, GamepadButtonFlags.Start, 0);
-            MapButton(SNESButton.Select, GamepadButtonFlags.Back, 0);
+            MapButton(NESButton.Start, GamepadButtonFlags.Start, 0);
+            MapButton(NESButton.Select, GamepadButtonFlags.Back, 0);
         }
 
         public int GetInputs()
@@ -106,25 +95,16 @@ namespace NESEps
 
         public void Update(bool IsMappingMode = false)
         {
-            if(!m_MouseMode && !m_Pad.IsConnected)
+            if(!m_Pad.IsConnected)
             {
                 return; 
             }
 
             State CurrentState = new State();
 
-            if (!m_MouseMode)
-            {
-                CurrentState = m_Pad.GetState();
-            }
-
             if (IsMappingMode)
             {
                 ProcessMapping(CurrentState);
-                if (m_MouseMode)
-                {
-                    GamePadsManager.InteruptMaping();
-                }
             }
 
             m_InputsMask = UpdateButtons(CurrentState);
@@ -205,139 +185,45 @@ namespace NESEps
 
             for (int i = 0; i != c_SNESButtonsCount; i++)
             {
-                if (!m_MouseMode)
+                GamepadButtonFlags ButtonToCheck = m_MappedButtons[i];
+
+                DpadOverAxis Dpad = new DpadOverAxis(CurrentState.Gamepad.LeftThumbX, CurrentState.Gamepad.LeftThumbY);
+
+                bool OldState = m_SNESButtonsState[i];
+                bool NewState = ButtonToCheck == GamepadButtonFlags.None ? false : CurrentState.Gamepad.Buttons.HasFlag(ButtonToCheck);
+
+                if (!NewState)
                 {
-                    GamepadButtonFlags ButtonToCheck = m_MappedButtons[i];
-
-                    DpadOverAxis Dpad = new DpadOverAxis(CurrentState.Gamepad.LeftThumbX, CurrentState.Gamepad.LeftThumbY);
-
-                    bool OldState = m_SNESButtonsState[i];
-                    bool NewState = ButtonToCheck == GamepadButtonFlags.None ? false : CurrentState.Gamepad.Buttons.HasFlag(ButtonToCheck);
-
-                    if (!NewState)
+                    if (ButtonToCheck == GamepadButtonFlags.DPadUp && Dpad.m_Up)
                     {
-                        if (ButtonToCheck == GamepadButtonFlags.DPadUp && Dpad.m_Up)
-                        {
-                            NewState = true;
-                        }
-                        else if (ButtonToCheck == GamepadButtonFlags.DPadDown && Dpad.m_Down)
-                        {
-                            NewState = true;
-                        }
-                        else if (ButtonToCheck == GamepadButtonFlags.DPadLeft && Dpad.m_Left)
-                        {
-                            NewState = true;
-                        }
-                        else if (ButtonToCheck == GamepadButtonFlags.DPadRight && Dpad.m_Right)
-                        {
-                            NewState = true;
-                        }
+                        NewState = true;
                     }
-
-                    m_SNESButtonsState[i] = NewState; // Для визуалайзера
-
-                    if (NewState)
+                    else if (ButtonToCheck == GamepadButtonFlags.DPadDown && Dpad.m_Down)
                     {
-                        input &= ~(1 << i);
+                        NewState = true;
+                    }
+                    else if (ButtonToCheck == GamepadButtonFlags.DPadLeft && Dpad.m_Left)
+                    {
+                        NewState = true;
+                    }
+                    else if (ButtonToCheck == GamepadButtonFlags.DPadRight && Dpad.m_Right)
+                    {
+                        NewState = true;
                     }
                 }
-                else
+
+                m_SNESButtonsState[i] = NewState; // Для визуалайзера
+
+                if (NewState)
                 {
-                    switch ((SNESButton)i)
-                    {
-                        case SNESButton.MouseAlwaysZero:
-                            break;
-                        case SNESButton.MouseSignatureAndButtons:
-                            // Второй байт: 76543210
-                            // ||||++++- Signature: 0001
-                            // ||++----- Current sensitivity (0: low; 1: medium; 2: high)
-                            // |+------- Left button (1: pressed)
-                            // +-------- Right button (1: pressed)
-                            byte mouseByte2 = 0x01; // Сигнатура 0001
-
-                            // Чувствительность (биты 4-5)
-                            mouseByte2 |= (byte)((m_MouseSensitivity & 0x03) << 4);
-
-                            // Левая кнопка (бит 6)
-                            if (Program.s_LMB) mouseByte2 |= 0x40;
-
-                            // Правая кнопка (бит 7)
-                            if (Program.s_RMB) mouseByte2 |= 0x80;
-
-                            // Устанавливаем младшие 8 бит
-                            input &= ~(mouseByte2 << i);
-                            break;
-                        case SNESButton.MouseY:
-                            // Третий байт: вертикальное смещение
-                            // |+++++++- Vertical displacement since last read
-                            // +-------- Direction (1: up; 0: down)
-                            byte mouseByte3 = 0;
-                            int deltaY = Program.s_AccumulatedDeltaY;
-
-                            if (deltaY != 0)
-                            {
-                                // Берем абсолютное значение (7 бит)
-                                int absDeltaY = Math.Abs(deltaY);
-                                if (absDeltaY > 127) absDeltaY = 127;
-
-                                mouseByte3 = (byte)absDeltaY;
-
-                                // Устанавливаем бит направления (бит 7)
-                                // 1 = up (отрицательное delta), 0 = down (положительное delta)
-                                if (deltaY < 0)
-                                {
-                                    mouseByte3 |= 0x80; // Движение вверх
-                                }
-
-                                // Сбрасываем накопленную дельту
-                                Program.s_AccumulatedDeltaY = 0;
-                            }
-
-                            // Устанавливаем младшие 8 бит
-                            input &= ~(mouseByte3 << i);
-                            break;
-
-                        case SNESButton.MouseX:
-                            // Четвертый байт: горизонтальное смещение
-                            // |+++++++- Horizontal displacement since last read
-                            // +-------- Direction (1: left; 0: right)
-                            byte mouseByte4 = 0;
-                            int deltaX = Program.s_AccumulatedDeltaX;
-
-                            if (deltaX != 0)
-                            {
-                                // Берем абсолютное значение (7 бит)
-                                int absDeltaX = Math.Abs(deltaX);
-                                if (absDeltaX > 127) absDeltaX = 127;
-
-                                mouseByte4 = (byte)absDeltaX;
-
-                                // Устанавливаем бит направления (бит 7)
-                                // 1 = left (отрицательное delta), 0 = right (положительное delta)
-                                if (deltaX < 0)
-                                {
-                                    mouseByte4 |= 0x80; // Движение влево
-                                }
-
-                                // Сбрасываем накопленную дельту
-                                Program.s_AccumulatedDeltaX = 0;
-                            }
-
-                            // Устанавливаем младшие 8 бит
-                            input &= ~(mouseByte4 << i);
-                            break;
-
-                        default:
-                            input &= ~(1 << i);
-                            break;
-                    }
+                    input &= ~(1 << i);
                 }
             }
 
             return input;
         }
 
-        public void MapButton(SNESButton Snes, GamepadButtonFlags FlagButton, int Port)
+        public void MapButton(NESButton Snes, GamepadButtonFlags FlagButton, int Port)
         {
             m_MappedButtons[(int)Snes] = FlagButton;
         }

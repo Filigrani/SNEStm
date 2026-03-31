@@ -16,7 +16,6 @@ namespace NESEps
             new GamePadInstance(UserIndex.Two),
             new GamePadInstance(UserIndex.Three),
             new GamePadInstance(UserIndex.Four),
-            new GamePadInstance(true),
         };
 
         public static GamePadInstance[] s_PlayerPads =
@@ -25,10 +24,10 @@ namespace NESEps
             null,
         };
 
-        public static Dictionary<SNESButton, PictureBox> s_Player1ButtonImages = new Dictionary<SNESButton, PictureBox>();
-        public static Dictionary<SNESButton, PictureBox> s_Player2ButtonImages = new Dictionary<SNESButton, PictureBox>();
+        public static Dictionary<NESButton, PictureBox> s_Player1ButtonImages = new Dictionary<NESButton, PictureBox>();
+        public static Dictionary<NESButton, PictureBox> s_Player2ButtonImages = new Dictionary<NESButton, PictureBox>();
 
-        private static SNESButton s_ButtonToMap = SNESButton.Up;
+        private static NESButton s_ButtonToMap = NESButton.Up;
         private static int s_AutoMapIndex = 0;
         private static int s_PortMapTo = 1;
         private static bool s_MappingActive = false;
@@ -54,7 +53,7 @@ namespace NESEps
             s_MappingActive = true;
         }
 
-        public static void SetButtonToMap(SNESButton Button, int Port)
+        public static void SetButtonToMap(NESButton Button, int Port)
         {
             if (GamePadsManager.s_ManualInput)
             {
@@ -99,40 +98,28 @@ namespace NESEps
             s_AutoMapIndex = -1;
         }
 
-        public enum SNESButton
+        public enum NESButton
         {
-            MouseAlwaysZero,
-            MouseSignatureAndButtons,
-            MouseX,
-            MouseY,
-
-
-            R,
-            L,
-            X,
             A,
-            Right,
-            Left,
-            Down,
-            Up,
-            Start,
-            Select,
-            Y,
             B,
+            Select,
+            Start,
+            Up,
+            Down,
+            Left,
+            Right,
 
             Count,
         }
 
-        public const int c_SNESButtonsCount = (int)SNESButton.Count;
+        public const int c_SNESButtonsCount = (int)NESButton.Count;
 
-        public static List<SNESButton> s_BindingOrder = new List<SNESButton>() 
+        public static List<NESButton> s_BindingOrder = new List<NESButton>() 
         { 
-            SNESButton.A, SNESButton.B, 
-            SNESButton.Y, SNESButton.X, 
-            SNESButton.Up, SNESButton.Down, 
-            SNESButton.Left, SNESButton.Right, 
-            SNESButton.L, SNESButton.R,
-            SNESButton.Start, SNESButton.Select 
+            NESButton.A, NESButton.B, 
+            NESButton.Up, NESButton.Down, 
+            NESButton.Left, NESButton.Right,
+            NESButton.Start, NESButton.Select 
         };
 
         public static void Update()
@@ -191,14 +178,14 @@ namespace NESEps
 
                 if (PlayerPort == 0)
                 {
-                    s_Player1ButtonImages.TryGetValue((SNESButton)i, out img);
+                    s_Player1ButtonImages.TryGetValue((NESButton)i, out img);
                 }else if(PlayerPort == 1)
                 {
-                    s_Player2ButtonImages.TryGetValue((SNESButton)i, out img);
+                    s_Player2ButtonImages.TryGetValue((NESButton)i, out img);
                 }
                 if (img != null)
                 {
-                    if ((ButtonStates[i] && !s_MappingActive) || (s_MappingActive && s_ButtonToMap == (SNESButton)i && s_PortMapTo == PlayerPort && s_MapingBlinkFrame > c_BlinkFrameWindow))
+                    if ((ButtonStates[i] && !s_MappingActive) || (s_MappingActive && s_ButtonToMap == (NESButton)i && s_PortMapTo == PlayerPort && s_MapingBlinkFrame > c_BlinkFrameWindow))
                     {
                         img.Image = img.InitialImage;
                     }

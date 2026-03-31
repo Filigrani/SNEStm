@@ -30,10 +30,8 @@
         {
             components = new System.ComponentModel.Container();
             pictureBox1 = new PictureBox();
-            XButtonP1 = new PictureBox();
             BButtonP1 = new PictureBox();
             AButtonP1 = new PictureBox();
-            YButtonP1 = new PictureBox();
             StartButtonP1 = new PictureBox();
             SelectButtonP1 = new PictureBox();
             DebugText = new Label();
@@ -43,20 +41,14 @@
             DownButtonP1 = new PictureBox();
             RightButtonP1 = new PictureBox();
             LeftButtonP1 = new PictureBox();
-            LButtonP1 = new PictureBox();
-            RButtonP1 = new PictureBox();
-            RButtonP2 = new PictureBox();
-            LButtonP2 = new PictureBox();
             LeftButtonP2 = new PictureBox();
             RightButtonP2 = new PictureBox();
             DownButtonP2 = new PictureBox();
             UpButtonP2 = new PictureBox();
             SelectButtonP2 = new PictureBox();
             StartButtonP2 = new PictureBox();
-            YButtonP2 = new PictureBox();
             BButtonP2 = new PictureBox();
             AButtonP2 = new PictureBox();
-            XButtonP2 = new PictureBox();
             pictureBox14 = new PictureBox();
             GamePadSelect2 = new ComboBox();
             AutoAssign2 = new Button();
@@ -65,30 +57,22 @@
             timer1 = new System.Windows.Forms.Timer(components);
             ManualInput = new CheckBox();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)XButtonP1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)BButtonP1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)AButtonP1).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)YButtonP1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)StartButtonP1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)SelectButtonP1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)UpButtonP1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)DownButtonP1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)RightButtonP1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)LeftButtonP1).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)LButtonP1).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)RButtonP1).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)RButtonP2).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)LButtonP2).BeginInit();
             ((System.ComponentModel.ISupportInitialize)LeftButtonP2).BeginInit();
             ((System.ComponentModel.ISupportInitialize)RightButtonP2).BeginInit();
             ((System.ComponentModel.ISupportInitialize)DownButtonP2).BeginInit();
             ((System.ComponentModel.ISupportInitialize)UpButtonP2).BeginInit();
             ((System.ComponentModel.ISupportInitialize)SelectButtonP2).BeginInit();
             ((System.ComponentModel.ISupportInitialize)StartButtonP2).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)YButtonP2).BeginInit();
             ((System.ComponentModel.ISupportInitialize)BButtonP2).BeginInit();
             ((System.ComponentModel.ISupportInitialize)AButtonP2).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)XButtonP2).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox14).BeginInit();
             SuspendLayout();
             // 
@@ -101,20 +85,6 @@
             pictureBox1.TabIndex = 0;
             pictureBox1.TabStop = false;
             pictureBox1.Click += pictureBox1_Click;
-            // 
-            // XButtonP1
-            // 
-            XButtonP1.BackColor = Color.FromArgb(255, 192, 192);
-            XButtonP1.Cursor = Cursors.Hand;
-            XButtonP1.ErrorImage = Properties.Resources.Xbutton_inactive;
-            XButtonP1.Image = Properties.Resources.Xbutton;
-            XButtonP1.InitialImage = Properties.Resources.Xbutton;
-            XButtonP1.Location = new Point(260, 130);
-            XButtonP1.Name = "XButtonP1";
-            XButtonP1.Size = new Size(18, 24);
-            XButtonP1.TabIndex = 10;
-            XButtonP1.TabStop = false;
-            XButtonP1.Click += XButtonP1_Click;
             // 
             // BButtonP1
             // 
@@ -143,20 +113,6 @@
             AButtonP1.TabIndex = 12;
             AButtonP1.TabStop = false;
             AButtonP1.Click += AButtonP1_Click;
-            // 
-            // YButtonP1
-            // 
-            YButtonP1.BackColor = Color.Transparent;
-            YButtonP1.Cursor = Cursors.Hand;
-            YButtonP1.ErrorImage = Properties.Resources.Ybutton_inactive;
-            YButtonP1.Image = Properties.Resources.Ybutton;
-            YButtonP1.InitialImage = Properties.Resources.Ybutton;
-            YButtonP1.Location = new Point(221, 124);
-            YButtonP1.Name = "YButtonP1";
-            YButtonP1.Size = new Size(31, 32);
-            YButtonP1.TabIndex = 13;
-            YButtonP1.TabStop = false;
-            YButtonP1.Click += YButtonP1_Click;
             // 
             // StartButtonP1
             // 
@@ -261,58 +217,6 @@
             LeftButtonP1.TabStop = false;
             LeftButtonP1.Click += LeftButtonP1_Click;
             // 
-            // LButtonP1
-            // 
-            LButtonP1.BackColor = Color.Red;
-            LButtonP1.ErrorImage = Properties.Resources.L;
-            LButtonP1.Image = Properties.Resources.L_active;
-            LButtonP1.InitialImage = Properties.Resources.L_active;
-            LButtonP1.Location = new Point(45, 85);
-            LButtonP1.Name = "LButtonP1";
-            LButtonP1.Size = new Size(51, 39);
-            LButtonP1.TabIndex = 23;
-            LButtonP1.TabStop = false;
-            LButtonP1.Click += LButtonP1_Click;
-            // 
-            // RButtonP1
-            // 
-            RButtonP1.BackColor = Color.FromArgb(255, 192, 192);
-            RButtonP1.ErrorImage = Properties.Resources.R;
-            RButtonP1.Image = Properties.Resources.R_active;
-            RButtonP1.InitialImage = Properties.Resources.R_active;
-            RButtonP1.Location = new Point(214, 85);
-            RButtonP1.Name = "RButtonP1";
-            RButtonP1.Size = new Size(53, 38);
-            RButtonP1.TabIndex = 24;
-            RButtonP1.TabStop = false;
-            RButtonP1.Click += RButtonP1_Click;
-            // 
-            // RButtonP2
-            // 
-            RButtonP2.BackColor = Color.FromArgb(255, 192, 192);
-            RButtonP2.ErrorImage = Properties.Resources.R;
-            RButtonP2.Image = Properties.Resources.R_active;
-            RButtonP2.InitialImage = Properties.Resources.R_active;
-            RButtonP2.Location = new Point(687, 85);
-            RButtonP2.Name = "RButtonP2";
-            RButtonP2.Size = new Size(53, 38);
-            RButtonP2.TabIndex = 37;
-            RButtonP2.TabStop = false;
-            RButtonP2.Click += RButtonP2_Click;
-            // 
-            // LButtonP2
-            // 
-            LButtonP2.BackColor = Color.Red;
-            LButtonP2.ErrorImage = Properties.Resources.L;
-            LButtonP2.Image = Properties.Resources.L_active;
-            LButtonP2.InitialImage = Properties.Resources.L_active;
-            LButtonP2.Location = new Point(518, 85);
-            LButtonP2.Name = "LButtonP2";
-            LButtonP2.Size = new Size(51, 39);
-            LButtonP2.TabIndex = 36;
-            LButtonP2.TabStop = false;
-            LButtonP2.Click += LButtonP2_Click;
-            // 
             // LeftButtonP2
             // 
             LeftButtonP2.BackColor = Color.FromArgb(255, 128, 128);
@@ -388,20 +292,6 @@
             StartButtonP2.TabStop = false;
             StartButtonP2.Click += StartButtonP2_Click;
             // 
-            // YButtonP2
-            // 
-            YButtonP2.BackColor = Color.Transparent;
-            YButtonP2.Cursor = Cursors.Hand;
-            YButtonP2.ErrorImage = Properties.Resources.Ybutton_inactive;
-            YButtonP2.Image = Properties.Resources.Ybutton;
-            YButtonP2.InitialImage = Properties.Resources.Ybutton;
-            YButtonP2.Location = new Point(694, 124);
-            YButtonP2.Name = "YButtonP2";
-            YButtonP2.Size = new Size(31, 32);
-            YButtonP2.TabIndex = 29;
-            YButtonP2.TabStop = false;
-            YButtonP2.Click += YButtonP2_Click;
-            // 
             // BButtonP2
             // 
             BButtonP2.BackColor = Color.RosyBrown;
@@ -429,20 +319,6 @@
             AButtonP2.TabIndex = 28;
             AButtonP2.TabStop = false;
             AButtonP2.Click += AButtonP2_Click;
-            // 
-            // XButtonP2
-            // 
-            XButtonP2.BackColor = Color.FromArgb(255, 192, 192);
-            XButtonP2.Cursor = Cursors.Hand;
-            XButtonP2.ErrorImage = Properties.Resources.Xbutton_inactive;
-            XButtonP2.Image = Properties.Resources.Xbutton;
-            XButtonP2.InitialImage = Properties.Resources.Xbutton;
-            XButtonP2.Location = new Point(733, 130);
-            XButtonP2.Name = "XButtonP2";
-            XButtonP2.Size = new Size(18, 24);
-            XButtonP2.TabIndex = 26;
-            XButtonP2.TabStop = false;
-            XButtonP2.Click += XButtonP2_Click;
             // 
             // pictureBox14
             // 
@@ -519,21 +395,15 @@
             Controls.Add(DebugText2);
             Controls.Add(AutoAssign2);
             Controls.Add(GamePadSelect2);
-            Controls.Add(RButtonP2);
-            Controls.Add(LButtonP2);
             Controls.Add(LeftButtonP2);
             Controls.Add(RightButtonP2);
             Controls.Add(DownButtonP2);
             Controls.Add(UpButtonP2);
             Controls.Add(SelectButtonP2);
             Controls.Add(StartButtonP2);
-            Controls.Add(YButtonP2);
             Controls.Add(BButtonP2);
             Controls.Add(AButtonP2);
-            Controls.Add(XButtonP2);
             Controls.Add(pictureBox14);
-            Controls.Add(RButtonP1);
-            Controls.Add(LButtonP1);
             Controls.Add(LeftButtonP1);
             Controls.Add(RightButtonP1);
             Controls.Add(DownButtonP1);
@@ -542,40 +412,30 @@
             Controls.Add(GamePadSelect1);
             Controls.Add(SelectButtonP1);
             Controls.Add(StartButtonP1);
-            Controls.Add(YButtonP1);
             Controls.Add(BButtonP1);
             Controls.Add(AButtonP1);
-            Controls.Add(XButtonP1);
             Controls.Add(DebugText);
             Controls.Add(pictureBox1);
             Name = "Form1";
             Text = "NESEps";
             Load += Form1_Load;
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
-            ((System.ComponentModel.ISupportInitialize)XButtonP1).EndInit();
             ((System.ComponentModel.ISupportInitialize)BButtonP1).EndInit();
             ((System.ComponentModel.ISupportInitialize)AButtonP1).EndInit();
-            ((System.ComponentModel.ISupportInitialize)YButtonP1).EndInit();
             ((System.ComponentModel.ISupportInitialize)StartButtonP1).EndInit();
             ((System.ComponentModel.ISupportInitialize)SelectButtonP1).EndInit();
             ((System.ComponentModel.ISupportInitialize)UpButtonP1).EndInit();
             ((System.ComponentModel.ISupportInitialize)DownButtonP1).EndInit();
             ((System.ComponentModel.ISupportInitialize)RightButtonP1).EndInit();
             ((System.ComponentModel.ISupportInitialize)LeftButtonP1).EndInit();
-            ((System.ComponentModel.ISupportInitialize)LButtonP1).EndInit();
-            ((System.ComponentModel.ISupportInitialize)RButtonP1).EndInit();
-            ((System.ComponentModel.ISupportInitialize)RButtonP2).EndInit();
-            ((System.ComponentModel.ISupportInitialize)LButtonP2).EndInit();
             ((System.ComponentModel.ISupportInitialize)LeftButtonP2).EndInit();
             ((System.ComponentModel.ISupportInitialize)RightButtonP2).EndInit();
             ((System.ComponentModel.ISupportInitialize)DownButtonP2).EndInit();
             ((System.ComponentModel.ISupportInitialize)UpButtonP2).EndInit();
             ((System.ComponentModel.ISupportInitialize)SelectButtonP2).EndInit();
             ((System.ComponentModel.ISupportInitialize)StartButtonP2).EndInit();
-            ((System.ComponentModel.ISupportInitialize)YButtonP2).EndInit();
             ((System.ComponentModel.ISupportInitialize)BButtonP2).EndInit();
             ((System.ComponentModel.ISupportInitialize)AButtonP2).EndInit();
-            ((System.ComponentModel.ISupportInitialize)XButtonP2).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox14).EndInit();
             ResumeLayout(false);
             PerformLayout();
@@ -584,10 +444,8 @@
         #endregion
 
         public PictureBox pictureBox1;
-        public PictureBox XButtonP1;
         public PictureBox BButtonP1;
         public PictureBox AButtonP1;
-        public PictureBox YButtonP1;
         public PictureBox StartButtonP1;
         public PictureBox SelectButtonP1;
         public Label DebugText;
@@ -597,20 +455,14 @@
         public PictureBox DownButtonP1;
         public PictureBox RightButtonP1;
         public PictureBox LeftButtonP1;
-        public PictureBox LButtonP1;
-        public PictureBox RButtonP1;
-        public PictureBox RButtonP2;
-        public PictureBox LButtonP2;
         public PictureBox LeftButtonP2;
         public PictureBox RightButtonP2;
         public PictureBox DownButtonP2;
         public PictureBox UpButtonP2;
         public PictureBox SelectButtonP2;
         public PictureBox StartButtonP2;
-        public PictureBox YButtonP2;
         public PictureBox BButtonP2;
         public PictureBox AButtonP2;
-        public PictureBox XButtonP2;
         public PictureBox pictureBox14;
         public ComboBox GamePadSelect2;
         public Button AutoAssign2;
