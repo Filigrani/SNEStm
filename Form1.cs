@@ -1,6 +1,6 @@
-using static SNEStm.GamePadsManager;
+using static NESEps.GamePadsManager;
 
-namespace SNEStm
+namespace NESEps
 {
     public partial class Form1 : Form
     {

@@ -3,7 +3,7 @@ using CSInputs.Enums;
 using CSInputs.ReadInput;
 using CSInputs.Structs;
 
-namespace SNEStm
+namespace NESEps
 {
     internal static class Program
     {

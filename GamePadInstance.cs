@@ -9,9 +9,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Channels;
 using System.Threading.Tasks;
-using static SNEStm.GamePadsManager;
+using static NESEps.GamePadsManager;
 
-namespace SNEStm
+namespace NESEps
 {
     public class GamePadInstance
     {

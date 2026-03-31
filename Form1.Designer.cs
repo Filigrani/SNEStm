@@ -1,4 +1,4 @@
-﻿namespace SNEStm
+﻿namespace NESEps
 {
     partial class Form1
     {
@@ -549,7 +549,7 @@
             Controls.Add(DebugText);
             Controls.Add(pictureBox1);
             Name = "Form1";
-            Text = "SNEStm";
+            Text = "NESEps";
             Load += Form1_Load;
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             ((System.ComponentModel.ISupportInitialize)XButtonP1).EndInit();
